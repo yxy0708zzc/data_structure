@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include <stdlib.h>
 struct node
 {
     int x = 0;
@@ -7,7 +8,7 @@ struct node
 };
 int list_len(node *s);                                    // 输出链表长度
 void list_print(node *s);                                 // 逐个输出一个链表
-void list_init(node *s, int in[2][2], int len);           // 初始化一个链表
+bool list_init(node *s, int in[2][2], int len);           // 初始化一个链表
 bool list_free(node *s);                                  // free一个链表
 void list_push_front(node *s, int x, int y);              // 在链表头加入一个元素
 void list_push_back(node *s, int x, int y);               // 在链表尾加入一个元素
@@ -46,7 +47,7 @@ void list_print(node *s)
     }
     printf("\n");
 }
-void list_init(node *s, int in[2][2], int len)
+bool list_init(node *s, int in[2][2], int len)
 {
     s->x = len;
     s->y = 2;
@@ -60,11 +61,14 @@ void list_init(node *s, int in[2][2], int len)
             continue;
         }
         node *next = (node *)calloc(1, sizeof(node));
+        if (next == NULL)
+            return false;
         next->x = in[i][0];
         next->y = in[i][1];
         now->next = next;
         now = next;
     }
+    return true;
 }
 bool list_free(node *s)
 {
@@ -304,7 +308,7 @@ int list_del_y(node *s, int y)
             s->x--;
             return tem;
         }
-        now=now->next;
+        now = now->next;
     }
     return 0;
 }

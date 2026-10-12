@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include<stdlib.h>
 #define SPACE 10
 struct node
 {

@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include<stdlib.h>
 #define NUM 10
 struct node
 {
