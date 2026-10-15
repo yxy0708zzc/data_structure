@@ -19,6 +19,7 @@ int str_cmp(string s1, string s2);                     // 比较：逐字符比�
 void str_clear(string *s);                             // 清空：数据置'\0'，长度归零（空间保留）
 char str_get(string s, int n);                         // 取值：返回s中第n个字符，越界返回'\0'
 bool str_replace(string *s, string olds, string news); // 替换：把s中第一处olds替换为news（先删后插）
+int str_sub_fast(string s,string sub);
 /*------------------------------------------------------------函数实现------------------------------------------------------------------------*/
 bool str_init(string *s, int len, char in[])
 {
@@ -201,6 +202,15 @@ bool str_replace(string *s, string olds, string news)
     str_del_n(s,n,olds.len);
     return str_insert(s, n, news);
 }
+
+int str_sub_fast(string s,string sub)//KMP实现
+{
+    
+
+}
+
+
+
 
 int main()
 {
