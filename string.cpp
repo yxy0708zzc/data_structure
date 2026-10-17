@@ -19,7 +19,7 @@ int str_cmp(string s1, string s2);                     // 比较：逐字符比�
 void str_clear(string *s);                             // 清空：数据置'\0'，长度归零（空间保留）
 char str_get(string s, int n);                         // 取值：返回s中第n个字符，越界返回'\0'
 bool str_replace(string *s, string olds, string news); // 替换：把s中第一处olds替换为news（先删后插）
-int str_sub_fast(string s,string sub);
+int str_sub_fast(string s, string sub);
 /*------------------------------------------------------------函数实现------------------------------------------------------------------------*/
 bool str_init(string *s, int len, char in[])
 {
@@ -199,34 +199,96 @@ bool str_replace(string *s, string olds, string news)
     int n = str_sub(*s, olds);
     if (n == -1)
         return false;
-    str_del_n(s,n,olds.len);
+    str_del_n(s, n, olds.len);
     return str_insert(s, n, news);
 }
 
-int str_sub_fast(string s,string sub)//KMP实现
+int str_sub_fast(string s, string sub, int start) // KMP实现
 {
-    
-
+    int *next = (int *)calloc(sub.len, sizeof(int));
+    int i = 0, j = 0, k = 0;
+    next[0] = 0;
+    i = 1;
+    while (i <= sub.len - 1)
+    {
+        if (sub.data[i] == sub.data[j])
+        {
+            next[i] = j + 1;
+            i++;
+            j++;
+        }
+        else
+        {
+            if (j == 0)
+            {
+                next[i] = 0;
+                i++;
+                continue;
+            }
+            else
+            {
+                j = next[j - 1];
+            }
+        }
+    }
+    j = 0;
+    i = start;
+    while (i <= s.len - 1)
+    {
+        if (s.data[i] == sub.data[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            if (j == 0)
+            {
+                i++;
+                continue;
+            }
+            j = next[j - 1];
+        }
+        if (j == sub.len)
+        {
+            return i - j;
+        }
+    }
+    return -1;
 }
-
-
-
 
 int main()
 {
-    string s, sub, old;
-    char a[10] = "123456";
-    char b[10] = "abc";
-    char c[10] = "xyz";
-    str_init(&s, 6, a);
-    str_init(&old, 3, b);
-    str_init(&sub, 3, c);
-    str_print(s);
-    str_insert(&s, 3, old);
-    str_print(s);
-    printf("取代%d\n",str_replace(&s, sub, sub));
-    str_print(s);
-    str_free(&s);
-    str_free(&sub);
+    // string s, sub, old;
+    // char a[10] = "123456";
+    // char b[10] = "abc";
+    // char c[10] = "xyz";
+    // str_init(&s, 6, a);
+    // str_init(&old, 3, b);
+    // str_init(&sub, 3, c);
+    // str_print(s);
+    // str_insert(&s, 3, old);
+    // str_print(s);
+    // printf("取代%d\n", str_replace(&s, sub, sub));
+    // str_print(s);
+    // str_free(&s);
+    // str_free(&sub);
+
+    string t;
+    string s;
+    char test[10] = "aaaaaaaaa";
+    char a[10] = "aa";
+    str_init(&t, 2, a);
+    str_init(&s, 9, test);
+    int res = 0;
+    while (1)
+    {
+        res = str_sub_fast(s, t, res);
+        if (res == -1)
+            break;
+        printf("%d ", res);
+        res+=t.len;
+    }
+
     return 0;
 }
